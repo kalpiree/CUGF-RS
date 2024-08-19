@@ -94,9 +94,9 @@ def main():
         # Debugging line to check dataset_type
         print(f"Using dataset: {dataset}, type: {dataset_type}")
         for interaction in args.interactions:
-            file_path = f'/Users/nitinbisht/PycharmProjects/recom/new_score_files/paper_1/{dataset.lower()}_{interaction}_data.csv'
+            #file_path = f'/Users/nitinbisht/PycharmProjects/recom/new_score_files/paper_1/{dataset.lower()}_{interaction}_data.csv'
+            file_path = f'path/to/datasets/{dataset.lower()}_{interaction}_data.csv'
             df = pd.read_csv(file_path)
-            #df = df.sample(frac=args.fraction, random_state=42)
             dataset_type = 'explicit' if dataset in ['amazonoffice', 'movielens'] else 'implicit'
             for model_name in args.models:
                 print(f"Processing model: {model_name}")
