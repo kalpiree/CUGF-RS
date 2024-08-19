@@ -3,7 +3,7 @@
 
 <h2>Overview</h2>
 
-<p>CUGF (Conformal Uncertainty Guarantees for Fairness) is a state-of-the-art recommendation framework that ensures guaranteed performance and fairness in recommender systems by leveraging conformal methods. This repository provides the necessary scripts and resources to preprocess data, train models, evaluate results, and visualize fairness and performance metrics.</p>
+<p>CUGF (Conformalized User Group Fairness) is a state-of-the-art recommendation framework that ensures guaranteed performance and fairness in recommender systems by leveraging conformal methods. This repository provides the necessary scripts and resources to preprocess data, train models, evaluate results, and visualize fairness and performance metrics.</p>
 
 <h2>Project Structure</h2>
 <ul>
