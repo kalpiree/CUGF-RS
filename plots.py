@@ -6,9 +6,11 @@ import matplotlib.pyplot as plt
 import os
 from matplotlib.lines import Line2D
 
-# Set this to the directory where your Excel files are located
-base_folder = '/path/to/your/excel/files'
-output_folder = '/Users/evaluation_results_paper_2__/plots'  # Folder to save the plots
+
+
+base_folder = 'path/to/excel/files'
+output_folder = 'path/to/output/plots'  # Folder to save the plots
+
 
 eta_values = [10, 15, 20]
 x_values = [10, 15, 20, 25, 30, 35, 40, 45, 50]
@@ -31,7 +33,7 @@ color_map = {
 
 # Function to load the data from Excel files
 def load_data(eta, x):
-    folder = f'/Users/recom/models/evaluation_results_paper_2__/eta_{eta}'
+    folder = f'{base_folder}/evaluation_results/eta_{eta}'
     file_name = f'all_evaluation_results_100_{x}_{eta}.xlsx'
     file_path = os.path.join(folder, file_name)
     return pd.read_excel(file_path)

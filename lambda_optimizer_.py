@@ -1,4 +1,3 @@
-
 import numpy as np
 
 class LambdaOptimizer:
@@ -21,16 +20,14 @@ class LambdaOptimizer:
         lambda_values = {}
         for group in self.df['group'].unique():
             group_df = self.df[self.df['group'] == group]
-            lambda_values[group] = group_df['score'].quantile \
-                (0.8)  # Initial lambda set to the 80th percentile of scores in the group
+            lambda_values[group] = group_df['score'].quantile(0.8)  # Initial lambda set to the 80th percentile of scores in the group
         return lambda_values
 
     def score_function(self, m_u_i_true, m_u_i, gamma):
         if self.score_option == 1:
             return int(m_u_i_true >= gamma) * np.sum([m_u_i[j] * int(m_u_i[j] >= gamma) for j in range(len(m_u_i))])
         elif self.score_option == 2:
-            return int(m_u_i_true >= gamma) * np.sum \
-                ([m_u_i[j] * int(m_u_i[j] >= m_u_i_true) for j in range(len(m_u_i))])
+            return int(m_u_i_true >= gamma) * np.sum([m_u_i[j] * int(m_u_i[j] >= m_u_i_true) for j in range(len(m_u_i))])
         elif self.score_option == 3:
             return np.sum([m_u_i[j] * int(m_u_i[j] >= gamma) for j in range(len(m_u_i))])
 
@@ -172,8 +169,7 @@ class LambdaOptimizer:
                 print("Hit rate and NDCG differences within thresholds and losses within alpha. Stopping iteration.")
                 break
 
-            if abs(hit_rate_diff - previous_hit_rate_diff) <= self.stability_threshold and abs \
-                    (ndcg_diff - previous_ndcg_diff) <= self.stability_threshold:
+            if abs(hit_rate_diff - previous_hit_rate_diff) <= self.stability_threshold and abs(ndcg_diff - previous_ndcg_diff) <= self.stability_threshold:
                 stability_count += 1
             else:
                 stability_count = 0
@@ -185,12 +181,10 @@ class LambdaOptimizer:
                 group_to_adjust = [group for group in all_groups if metrics[group]['Loss'] > self.alpha]
                 print(f"Adjusting lambda for loss exceeding alpha: Groups {group_to_adjust}")
             elif hit_rate_diff > self.hit_rate_diff_threshold:
-                group_to_adjust = all_groups[0] if metrics[all_groups[0]]['Hit Rate'] < metrics[all_groups[1]]
-                    ['Hit Rate'] else all_groups[1]
+                group_to_adjust = all_groups[0] if metrics[all_groups[0]]['Hit Rate'] < metrics[all_groups[1]]['Hit Rate'] else all_groups[1]
                 print(f"Adjusting lambda for hit rate difference: Group {group_to_adjust}")
             elif ndcg_diff > self.ndcg_diff_threshold:
-                group_to_adjust = all_groups[0] if metrics[all_groups[0]]['NDCG Loss'] < metrics[all_groups[1]]
-                    ['NDCG Loss'] else all_groups[1]
+                group_to_adjust = all_groups[0] if metrics[all_groups[0]]['NDCG Loss'] < metrics[all_groups[1]]['NDCG Loss'] else all_groups[1]
                 print(f"Adjusting lambda for NDCG difference: Group {group_to_adjust}")
 
             if isinstance(group_to_adjust, list):
@@ -201,10 +195,8 @@ class LambdaOptimizer:
             else:
                 old_lambda = self.lambda_values[group_to_adjust]
                 self.lambda_values[group_to_adjust] = max(self.min_lambda, self.lambda_values[group_to_adjust] - adjustment_step)
-                print \
-                    (f"Lambda for group {group_to_adjust} adjusted from {old_lambda} to {self.lambda_values[group_to_adjust]}")
-                print \
-                    (f"Group {group_to_adjust}: Hit Rate: {metrics[group_to_adjust]['Hit Rate']}, NDCG: {metrics[group_to_adjust]['NDCG Loss']}")
+                print(f"Lambda for group {group_to_adjust} adjusted from {old_lambda} to {self.lambda_values[group_to_adjust]}")
+                print(f"Group {group_to_adjust}: Hit Rate: {metrics[group_to_adjust]['Hit Rate']}, NDCG: {metrics[group_to_adjust]['NDCG Loss']}")
 
             previous_hit_rate_diff = hit_rate_diff
             previous_ndcg_diff = ndcg_diff

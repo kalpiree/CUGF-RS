@@ -3,9 +3,8 @@ import matplotlib.pyplot as plt
 import os
 from matplotlib.lines import Line2D
 
-# Set this to the directory where your Excel files are located
-base_folder = '/path/to/your/excel/files'
-output_folder = '/Users/recom/models/plots'  # Folder to save the plots
+base_folder = 'path/to/excel/files'
+output_folder = 'path/to/output/plots'  # Folder to save the plots
 
 # Updated alpha and eta values as per your request
 alpha_values = [10, 20, 30]
@@ -27,16 +26,20 @@ color_map = {
     'NeuMF': 'purple'
 }
 
+
 # Function to load the data from Excel files
 def load_data(eta, alpha):
     folder = f'/Users/recom/models/alpha_{alpha}'
+    folder = f'{base_folder}/evaluation_results/eta_{eta}'
     file_name = f'all_evaluation_results_100_{alpha}_{eta}.xlsx'
     file_path = os.path.join(folder, file_name)
     return pd.read_excel(file_path)
 
+
 # Function to filter the data based on Method = 'Conformal'
 def filter_data(df):
     return df[df['Method'] == 'Conformal']
+
 
 # Function to prepare and plot the data
 def plot_metric(df_all, alpha, dataset, interaction, metric, models, eta_values, output_folder):
@@ -67,7 +70,8 @@ def plot_metric(df_all, alpha, dataset, interaction, metric, models, eta_values,
                 eta_transformed = subset_group1['eta_value'].tolist()
 
                 # Print the exact data being plotted for each line
-                print(f"\nPlotting data for model: {model}, dataset: {dataset}, interaction: {interaction}, alpha: {alpha}, metric: {metric}")
+                print(
+                    f"\nPlotting data for model: {model}, dataset: {dataset}, interaction: {interaction}, alpha: {alpha}, metric: {metric}")
                 print(pd.DataFrame({'eta_value': eta_transformed, metric: avg_values}))
 
                 line, = plt.plot(eta_transformed, avg_values, linestyle='-', marker='o',
@@ -89,7 +93,8 @@ def plot_metric(df_all, alpha, dataset, interaction, metric, models, eta_values,
             eta_transformed = subset['eta_value'].tolist()
 
             # Print the exact data being plotted for each line
-            print(f"\nPlotting data for model: {model}, dataset: {dataset}, interaction: {interaction}, alpha: {alpha}, metric: {metric}")
+            print(
+                f"\nPlotting data for model: {model}, dataset: {dataset}, interaction: {interaction}, alpha: {alpha}, metric: {metric}")
             print(subset[['eta_value', metric]])
 
             line, = plt.plot(eta_transformed, subset[metric], linestyle='-', marker='o',
@@ -120,6 +125,7 @@ def plot_metric(df_all, alpha, dataset, interaction, metric, models, eta_values,
     plt.savefig(os.path.join(alpha_folder, file_name))
     plt.close()  # Close the plot to free up memory
 
+
 # Loop over alpha values, datasets, interactions, and metrics to generate and save plots
 for alpha in alpha_values:
     for dataset in datasets:
@@ -130,11 +136,12 @@ for alpha in alpha_values:
                 for eta in eta_values:
                     df = load_data(eta, alpha)
                     df_filtered = filter_data(df).copy()
-                    df_filtered['eta_value'] = eta/100
+                    df_filtered['eta_value'] = eta / 100
                     df_all = pd.concat([df_all, df_filtered])
 
                 # Debug: Print the accumulated data to verify it contains all eta_values for the current metric
-                print(f"\nAccumulated Data for alpha = {alpha}, dataset = {dataset}, interaction = {interaction}, metric = {metric}:")
+                print(
+                    f"\nAccumulated Data for alpha = {alpha}, dataset = {dataset}, interaction = {interaction}, metric = {metric}:")
                 print(df_all[['File', 'Group', 'eta_value', metric]])
 
                 plot_metric(df_all, alpha, dataset, interaction, metric, models, eta_values, output_folder)

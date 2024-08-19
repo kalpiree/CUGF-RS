@@ -30,7 +30,8 @@ save_model = True
 
 # # Create DataFrame
 # df = pd.DataFrame(data)
-df = pd.read_csv('/files/old_exp/interactions_data_movielens.csv')
+df = pd.read_csv('path/to/interactions_data_movielens.csv')
+
 
 # Initialize DataLoader
 data_loader = FlexibleDataLoader(df=df, dataset_type='explicit')
